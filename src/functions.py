@@ -22,6 +22,10 @@ def entity_rating(sentence):
     nlp = nlp_load(sentence)
     return [(ent.text, ent.label_) for ent in nlp.ents]
 
-print(sentiment_rating("This girl is really demanding but I like her more or less"))
-print(entity_rating("Apple is looking at buying U.K. startup for $1 billion"))
+
+
+if __name__ == '__main__':
+
+    print(sentiment_rating("This girl is really demanding but I like her more or less"))
+    print(entity_rating("Apple is looking at buying U.K. startup for $1 billion"))
 
