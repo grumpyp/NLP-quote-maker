@@ -1,11 +1,10 @@
 from flask import Flask
-import config
-import functions
-from views import view
+from app.views import view
+from app import config
+from app.src.functions import sentiment_rating
 
 app = Flask(__name__)
 
-# Routing
 app.register_blueprint(view)
 
 if __name__ == '__main__' and config.production == True:
