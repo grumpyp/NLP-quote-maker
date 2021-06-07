@@ -1,6 +1,6 @@
 from flask import render_template, Blueprint
-from app.src import functions
-from app.src import db
+from src import functions
+from src import db
 
 
 view = Blueprint("view", __name__)
