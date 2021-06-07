@@ -1,6 +1,13 @@
 # NLP-quote-maker
 A NLP driven script which will give you a quote according to the sentence you feed it. It pulls data from several API's and makes up a relation by f.e. sentiment of the sentence
 
+## Run
+To run the app 
+- clone this repository `git clone git@github.com:grumpyp/NLP-quote-maker.git`
+- setup virtual environment __if required__ `python3 -m venv venv`
+- Install requirements.txt `pip install -r requirements.txt`
+- do `flask run`
+
 ## ⭐ Features
 tbd.
 
