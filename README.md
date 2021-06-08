@@ -6,6 +6,7 @@ To run the app
 - clone this repository `git clone git@github.com:grumpyp/NLP-quote-maker.git`
 - setup virtual environment __if required__ `python3 -m venv venv`
 - Install requirements.txt `pip install -r requirements.txt`
+- set environment variables "mongouser" and "mongopassword"
 - do `flask run`
 
 ## ⭐ Features

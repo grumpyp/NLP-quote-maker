@@ -10,8 +10,8 @@ from app import config
 
 logger = logging.getLogger(__name__)
 
-mongo_client = pymongo.MongoClient(config.mongo_url, ssl=True,
-            ssl_cert_reqs='CERT_NONE', serverSelectionTimeoutMS=3000)
+mongo_client = pymongo.MongoClient(config.mongo_url, username=config.mongo_user, password=config.mongo_password
+            , ssl=True, ssl_cert_reqs='CERT_NONE', serverSelectionTimeoutMS=3000)
 nlp_db = mongo_client[config.mongo_db_name]
 
 #this method is responsible for loading "quotes" collection
