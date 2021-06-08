@@ -1,10 +1,8 @@
 from flask import Flask
-from views import view
-import config
+from .views import view
+import app.config
 
-from src.functions import sentiment_rating
-
-import src.db as db
+from .src.functions import sentiment_rating
 
 import logging
 
@@ -24,5 +22,4 @@ app.register_blueprint(view)
 
 if __name__ == '__main__' and config.production == True:
     logger.debug("Going to start app ")
-    logger.debug(f'"DB connection test ", {db.test_db()}')
     app.run()

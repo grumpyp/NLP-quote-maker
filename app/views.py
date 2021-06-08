@@ -1,10 +1,16 @@
-from flask import render_template, Blueprint
-from src import functions
-from src import db
+from flask import render_template, Blueprint, Response
+from .src import functions
+from .src import db
 
+from bson.json_util import dumps
 
 view = Blueprint("view", __name__)
 
 @view.get('/')
 def hello():
     return 'Hello World!'
+
+
+@view.get('/quotes')
+def get_quotes():
+    return Response(response=dumps(db.fetch_all_quotes()))

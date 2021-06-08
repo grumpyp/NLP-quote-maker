@@ -6,7 +6,7 @@ import logging
 
 from bson.objectid import ObjectId
 
-import config
+from app import config
 
 logger = logging.getLogger(__name__)
 
@@ -51,12 +51,12 @@ def read_excel():
 def fetch_all_quotes():
     quotes_col = nlp_db[config.mongo_quotes_coll]
     
-    return quotes_col.find()
+    return list(quotes_col.find())
 
 def fetch_quotes_by_author(author):
     quotes_col = nlp_db[config.mongo_quotes_coll]
     
-    return quotes_col.find({"author": author})
+    return list(quotes_col.find({"author": author}))
 
 def test_db():
     return mongo_client.test
