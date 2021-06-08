@@ -24,4 +24,5 @@ app.register_blueprint(view)
 
 if __name__ == '__main__' and config.production == True:
     logger.debug("Going to start app ")
+    logger.debug(f'"DB connection test ", {db.test_db()}')
     app.run()

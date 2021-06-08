@@ -10,7 +10,8 @@ import config
 
 logger = logging.getLogger(__name__)
 
-mongo_client = pymongo.MongoClient(config.mongo_url, ssl=True, ssl_cert_reqs='CERT_NONE')
+mongo_client = pymongo.MongoClient(config.mongo_url, ssl=True,
+            ssl_cert_reqs='CERT_NONE', serverSelectionTimeoutMS=3000)
 nlp_db = mongo_client[config.mongo_db_name]
 
 #this method is responsible for loading "quotes" collection
@@ -56,6 +57,9 @@ def fetch_quotes_by_author(author):
     quotes_col = nlp_db[config.mongo_quotes_coll]
     
     return quotes_col.find({"author": author})
+
+def test_db():
+    return mongo_client.test
 
 if __name__ == "__main__":
     for a in fetch_all_quotes():
