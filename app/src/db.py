@@ -62,5 +62,5 @@ def test_db():
     return mongo_client.test
 
 if __name__ == "__main__":
-    for a in fetch_all_quotes():
+    for a in fetch_quotes_by_author("Mark Twain"):
         print(a)

@@ -1,4 +1,6 @@
-from flask import render_template, Blueprint, Response
+from flask import render_template
+from flask import Blueprint
+from flask import Response
 from .src import functions
 from .src import db
 
