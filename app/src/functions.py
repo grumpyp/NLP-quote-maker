@@ -5,9 +5,7 @@ import spacy
 from spacy import displacy
 from spacy.util import minibatch
 from collections import Counter
-from db import fetch_all_quotes
 import pandas as pd
-from functools import partial
 from joblib import Parallel, delayed
 
 # to get the corpora of the libraries please run these commands once in your terminal
@@ -52,19 +50,21 @@ class Parallelize():
 
 
 class Rating():
-    def __init__(self, sentence):
-        self.sentence = sentence
+    def __init__(self):
         self.rating = {}
-        self.sentiment_rating(sentence)
-        self.entity_rating(sentence)
-        self.check_rating()
+        pass
 
-    def get_sentences(self, sentence):
+    def _get_sentences(self, sentence):
         if isinstance(sentence, pd.Series):
             self.input = sentence.values
         else:
             self.input = sentence
-        return self.input
+
+    def get_ratings(self, sentence):
+        self._get_sentences(sentence)
+        self.sentiment_rating()
+        self.entity_rating()
+        self.check_rating()
 
     def sentiment_rating(self, sentence):
         self.tokenize = nltk.word_tokenize
@@ -87,57 +87,40 @@ class Rating():
 
 
 if __name__ == '__main__':
-    ######## for parallelizing calculations on bulk extract (untested) #######
-    # def custom_sentiment_entity(group, cls):
-    #     results = list()
-    #     for text in group:
-    #         results.append((cls.sentiment_rating(
-    #             text), cls.entity_rating(text)))
-    #     return results
+    rater = Rating()
+    sentence = "Apple is looking at buying U.K. startup for $1 billion it would be a huge win for the company"
+    sent2 = "Today I am super sad because of work"
+    sent3 = "I am happy because it is the weekend"
+    sent4 = "I earned a big bonus today"
+    sent5 = "I bought myself a new phone which made me quite happy"
+    print(sentence)
+    rater.get_ratings(sentence)
+    print(sent2)
+    rater.get_ratings(sent2)
+    print(sent3)
+    rater.get_ratings(sent3)
+    print(sent4)
+    rater.get_ratings(sent4)
+    print(sent5)
+    rater.get_ratings(sent5)
 
-    # process_rating = Rating()
-    # f = partial(custom_sentiment_entity, cls=process_rating)
-    # # quotes = process_rating.get_sentences(
-    # #     pd.Series([data for data in fetch_all_quotes()]))
-    # quotes = process_rating.get_sentences(df['quotes'])
-    # parallelize = Parallelize(8, 125, f)
-    # results = parallelize.execute(quotes)
-    # del process_rating
-    ##########################################################################
+    print("------------quotes----------")
+    quote1 = "Envy of other people shows how they are unhappy. Their continual attention to others behavior shows how they are boring."
+    quote2 = "Society tames the wolf into a dog. And man is the most domesticated animal of all."
+    quote3 = "There comes a point where we need to stop just pulling people out of the river. We need to go upstream and find out why they’re falling in"
+    quote4 = "Don’t postpone joy until you have learned all of your lessons. Joy is your lesson"
+    quote5 = "Imagine how you want to feel at the end of the day. Start working towards that now."
 
-    # sentence = "Apple is looking at buying U.K. startup for $1 billion it would be a huge win for the company"
-    # sent2 = "Today I am super sad because of work"
-    # sent3 = "I am happy because it is the weekend"
-    # sent4 = "I earned a big bonus today"
-    # sent5 = "I bought myself a new phone which made me quite happy"
-    # print(sentence)
-    # rating(sentence)
-    # print(sent2)
-    # rating(sent2)
-    # print(sent3)
-    # rating(sent3)
-    # print(sent4)
-    # rating(sent4)
-    # print(sent5)
-    # rating(sent5)
+    print(quote1)
+    rater.get_ratings(quote1)
+    print(quote2)
+    rater.get_ratings(quote2)
+    print(quote3)
+    rater.get_ratings(quote3)
+    print(quote4)
+    rater.get_ratings(quote4)
+    print(quote5)
+    rater.get_ratings(quote5)
 
-    # print("------------quotes----------")
-    # quote1 = "Envy of other people shows how they are unhappy. Their continual attention to others behavior shows how they are boring."
-    # quote2 = "Society tames the wolf into a dog. And man is the most domesticated animal of all."
-    # quote3 = "There comes a point where we need to stop just pulling people out of the river. We need to go upstream and find out why they’re falling in"
-    # quote4 = "Don’t postpone joy until you have learned all of your lessons. Joy is your lesson"
-    # quote5 = "Imagine how you want to feel at the end of the day. Start working towards that now."
-
-    # print(quote1)
-    # rating(quote1)
-    # print(quote2)
-    # rating(quote2)
-    # print(quote3)
-    # rating(quote3)
-    # print(quote4)
-    # rating(quote4)
-    # print(quote5)
-    # rating(quote5)
-
-    #print(sentiment_rating("This girl is really demanding but I like her more or less"))
-    #print(entity_rating("Apple is looking at buying U.K. startup for $1 billion"))
+    # print(sentiment_rating("This girl is really demanding but I like her more or less"))
+    # print(entity_rating("Apple is looking at buying U.K. startup for $1 billion"))
