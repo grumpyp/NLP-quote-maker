@@ -2,7 +2,7 @@ from flask import Flask
 from .views import view
 import app.config
 
-from .src.functions import sentiment_rating
+from .src.functions import Rating
 
 import logging
 
