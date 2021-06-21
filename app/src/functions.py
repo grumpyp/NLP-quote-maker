@@ -62,8 +62,8 @@ class Rating():
 
     def get_ratings(self, sentence):
         self._get_sentences(sentence)
-        self.sentiment_rating()
-        self.entity_rating()
+        self.sentiment_rating(sentence)
+        self.entity_rating(sentence)
         self.check_rating()
 
     def sentiment_rating(self, sentence):
