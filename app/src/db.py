@@ -1,6 +1,7 @@
 from .functions import Rating, Parallelize
 import pandas as pd
 from functools import partial
+from datetime import datetime
 
 import openpyxl
 import pymongo
@@ -13,7 +14,8 @@ from app import config
 logger = logging.getLogger(__name__)
 
 mongo_client = pymongo.MongoClient(config.mongo_url, username=config.mongo_user,
-                                   password=config.mongo_password, ssl=True, ssl_cert_reqs='CERT_NONE', serverSelectionTimeoutMS=3000)
+                                   password=config.mongo_password, ssl=True,
+                                   ssl_cert_reqs='CERT_NONE', serverSelectionTimeoutMS=3000)
 nlp_db = mongo_client[config.mongo_db_name]
 
 # this method is responsible for loading "quotes" collection
@@ -24,34 +26,46 @@ def create_quotes_db():
     try:
         quotes_col = nlp_db[config.mongo_quotes_coll]
         quotes_col.insert_many(list(read_excel().values()))
+        print ("Completed work ", datetime.now())
     except Exception as ex:
         logger.error("Error storing to mongodb", exc_info=True)
 
 # this method is responsible for reading quotes excel file and storing
 #records in mongodb
-
-
 def read_excel():
+    print ("Going to work ", datetime.now())
     file_name = "Motivational Quotes Database.xlsx"
+    
     try:
         wb = openpyxl.load_workbook(file_name)
         sheet = wb.active
 
         data = {}
+        rating = Rating()
         for row in sheet.rows:
             if (row[0].value is not None and row[1].value is not None and
                     row[2].value is not None and row[0].value != 'Quotes'):
                 id = ObjectId()
+                quote = row[0].value
+
+                sen_rating = rating.sentiment_rating(quote)
+                sen_entity = rating.entity_rating(quote)
+                
                 data[id] = {
                     "_id": id,
-                    "quote": row[0].value,
+                    "quote": quote,
                     "author": row[1].value,
                     "tag": [row[2].value.strip()],
-                    "rating": float(0.0)
+                    "rating": 0.0,
+                    "rating": rating.rating['rating_test'],
+                    "sentiment": rating.rating['sentiment'],
+                    "entities": rating.rating['entities']
                 }
+                del quote, sen_rating, sen_entity
     finally:
         wb.close()
 
+    print("Finished file reading ", datetime.now(), ", records read ", len(data))
     return data
 
 
@@ -74,7 +88,7 @@ def test_db():
 if __name__ == "__main__":
     # for a in fetch_quotes_by_author("Mark Twain"):
     #     print(a)
-
+    #create_quotes_db()
     ############## Parallelizing rating calc section (for all db items at one time) #############
     def custom_sentiment_entity(group, cls):
         results = list()
