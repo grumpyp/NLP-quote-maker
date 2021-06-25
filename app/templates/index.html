@@ -3,11 +3,29 @@
 <head>
     <link rel="stylesheet" href="static/css/style.css">
     <script type="text/javascript" src="static/js/main.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
 
-<h1>My First Heading</h1>
-<p>My first paragraph.</p>
+<input type ="text" id="livebox">
+<p id = "datalist"></p>
+<script>
+    $(document).ready(function(){
+        $("#livebox").on("input",function(e){
+            $("#datalist").empty();
+            $.ajax({
+                method:"post",
+                url:"/livesearch",
+                data:{text:$("#livebox").val()},
+                success:function(res){
+                    document.getElementById("datalist").innerHTML = res;
+                    $("#datalist").html(res);
+                    console.log(res);
+                    }
+            });
+        });
+    });
+</script>
 
 </body>
 </html> 
