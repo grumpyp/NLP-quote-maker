@@ -52,7 +52,9 @@ class Parallelize():
 class Rating():
     def __init__(self):
         self.rating = {}
-        pass
+        self.tokenize = nltk.word_tokenize
+        self.sia = SentimentIntensityAnalyzer()
+        self.nlp_load = spacy.load('en_core_web_sm')
 
     def _get_sentences(self, sentence):
         if isinstance(sentence, pd.Series):
@@ -62,13 +64,11 @@ class Rating():
 
     def get_ratings(self, sentence):
         self._get_sentences(sentence)
-        self.sentiment_rating()
-        self.entity_rating()
+        self.sentiment_rating(sentence)
+        self.entity_rating(sentence)
         self.check_rating()
 
     def sentiment_rating(self, sentence):
-        self.tokenize = nltk.word_tokenize
-        self.sia = SentimentIntensityAnalyzer()
         self.sentiment_scores = self.sia.polarity_scores(sentence)
         self.rating["sentiment"] = self.sentiment_scores
         self.rating["rating_test"] = self.sentiment_scores["neg"] * -1 + \
@@ -76,15 +76,13 @@ class Rating():
         return self.sentiment_scores
 
     def entity_rating(self, sentence):
-        self.nlp_load = spacy.load('en_core_web_sm')
         self.nlp = self.nlp_load(sentence)
         self.entities = [ent.label_ for ent in self.nlp.ents]
         self.rating["entities"] = self.entities
         return [(ent.text, ent.label_) for ent in self.nlp.ents]
 
     def check_rating(self):
-        print(self.rating)
-
+        print(self.rating)  
 
 if __name__ == '__main__':
     rater = Rating()
