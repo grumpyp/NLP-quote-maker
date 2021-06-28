@@ -50,11 +50,12 @@ class Parallelize():
 
 
 class Rating():
+
+    nlp_load = spacy.load('en_core_web_sm')
+    
     def __init__(self):
         self.rating = {}
-        self.tokenize = nltk.word_tokenize
         self.sia = SentimentIntensityAnalyzer()
-        self.nlp_load = spacy.load('en_core_web_sm')
 
     def _get_sentences(self, sentence):
         if isinstance(sentence, pd.Series):
@@ -71,8 +72,7 @@ class Rating():
     def sentiment_rating(self, sentence):
         self.sentiment_scores = self.sia.polarity_scores(sentence)
         self.rating["sentiment"] = self.sentiment_scores
-        self.rating["rating_test"] = self.sentiment_scores["neg"] * -1 + \
-            self.sentiment_scores["neu"] * 0.3 + self.sentiment_scores["pos"]
+        self.rating["rating_test"] = Rating.compute_ratings(self.sentiment_scores)
         return self.sentiment_scores
 
     def entity_rating(self, sentence):
@@ -82,7 +82,26 @@ class Rating():
         return [(ent.text, ent.label_) for ent in self.nlp.ents]
 
     def check_rating(self):
-        print(self.rating)  
+        print(self.rating)
+
+    @staticmethod
+    def compute_ratings(sentiment_scores):
+        return sentiment_scores["neg"] * -1 + \
+            sentiment_scores["neu"] * 0.3 + sentiment_scores["pos"] 
+
+    @staticmethod
+    def sentence_rating(sentence):
+        sa = SentimentIntensityAnalyzer()
+        sentiment_scores = sa.polarity_scores(sentence)
+        rating = Rating.compute_ratings(sentiment_scores)
+        return rating
+
+    @staticmethod
+    def sentence_entities(sentence):
+        nlp = Rating.nlp_load(sentence)
+        return [(ent.text, ent.label_) for ent in nlp.ents]
+
+      
 
 if __name__ == '__main__':
     rater = Rating()
@@ -119,6 +138,3 @@ if __name__ == '__main__':
     rater.get_ratings(quote4)
     print(quote5)
     rater.get_ratings(quote5)
-
-    # print(sentiment_rating("This girl is really demanding but I like her more or less"))
-    # print(entity_rating("Apple is looking at buying U.K. startup for $1 billion"))
