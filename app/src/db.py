@@ -82,10 +82,32 @@ def fetch_quotes_by_author(author):
 
 def fetch_quotes_by_ratings(quote, count=5):
 
-    sen_rating = Rating.sentence_rating(quote)
-    logger.debug(f'Rating for quote  {quote} is {sen_rating}')
+    sen_score = Rating.sentence_scores(quote)
+    sen_rating = sen_score["rating"]
+    logger.debug(f'Rating for quote  {quote} is {sen_score}')
     quotes_col = nlp_db[config.mongo_quotes_coll]
-    return list(quotes_col.find({"rating": {"$gte": sen_rating}}).limit(count))
+
+    result = quotes_col.aggregate([
+        {
+            '$project': {
+                'diff': {
+                    '$abs': {
+                        '$subtract': [
+                            sen_rating, '$rating'
+                        ]
+                    }
+                },
+                "doc": "$$ROOT"
+            }
+        }, {
+            '$sort': {
+                'diff': 1
+            }
+        }, {
+            '$limit': count
+        }
+    ])
+    return list(result)
 
 def test_db():
     return mongo_client.test
@@ -96,7 +118,7 @@ if __name__ == "__main__":
     #     print(a)
     #create_quotes_db()
 
-    print(fetch_quotes_by_ratings("I am very happy today"))
+    print(fetch_quotes_by_ratings("I am very sad today"))
 
     ############## Parallelizing rating calc section (for all db items at one time) #############
     # def custom_sentiment_entity(group, cls):

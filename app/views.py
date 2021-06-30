@@ -20,7 +20,10 @@ def index():
 def get_quotes():
 
     quote = request.args.get('quote')
-    data = db.fetch_quotes_by_ratings(quote)
-    logger.debug(f'Found matching quotes count  {len(data)}')
+    if not quote:
+        return render_template('index.html')
+        
+    data = [result['doc'] for result in db.fetch_quotes_by_ratings(quote)]
+    logger.debug(f'Found matching quotes count  {data}')
     
     return render_template('index.html', data = data)

@@ -86,18 +86,38 @@ class Rating():
 
     @staticmethod
     def compute_ratings(sentiment_scores):
+        """ This method computes ratings on the basis of input scores """
+
         return sentiment_scores["neg"] * -1 + \
             sentiment_scores["neu"] * 0.3 + sentiment_scores["pos"] 
 
     @staticmethod
     def sentence_rating(sentence):
+        """ This method computes ratings of the input sentence. 
+            It returns rating value"""
+
         sa = SentimentIntensityAnalyzer()
         sentiment_scores = sa.polarity_scores(sentence)
         rating = Rating.compute_ratings(sentiment_scores)
         return rating
+    
+    @staticmethod
+    def sentence_scores(sentence):
+        """ This method computes ratings of the input sentence. 
+            It returns sentiment scores and rating value"""
+
+        sa = SentimentIntensityAnalyzer()
+        sentiment_scores = sa.polarity_scores(sentence)
+        rating = Rating.compute_ratings(sentiment_scores)
+        sentiment_scores["rating"] = rating
+        return sentiment_scores
 
     @staticmethod
     def sentence_entities(sentence):
+        """ This method fetches entities from input sentence.
+            It returns array of entity text and label """
+
+
         nlp = Rating.nlp_load(sentence)
         return [(ent.text, ent.label_) for ent in nlp.ents]
 
