@@ -1,34 +1,20 @@
 {% extends "layout.html" %} {% block content %}
 <div class="offset-md-2 col-sm-8 mt-5">
-	<form
-		method="GET"
-		action="/quotes"
-		onsubmit="return validateForm(quote)"
-		class="form-group"
-	>
-		<div class="">
-			<input
-				id="quote_box"
-				type="text"
-				name="quote"
-				class="form-control border border-dark"
-				placeholder="Type your thoughts here..."
-				required
-			/>
-		</div>
-		<div class="mt-2 d-flex justify-content-center">
-			<div class="p-2">
-				<button type="submit" class="btn btn-primary btn-block">
-					Search Quote
-				</button>
-			</div>
-			<div class="p-2">
-				<button type="reset" class="btn btn-primary btn-block">
-					Clear
-				</button>
-			</div>
-		</div>
-	</form>
+	<input type ="text" id="livebox">
+	<script>
+		$(document).ready(function(){
+			$("#livebox").on("input",function(e){
+				$.ajax({
+					method:"post",
+					url:"/livesearch",
+					data:{text:$("#livebox").val()},
+					success: function(response) {
+						console.log(response)
+}
+				});
+			});
+		});
+	</script>
 </div>
 {% if data %}
 <div class="mt-5" id="result">
