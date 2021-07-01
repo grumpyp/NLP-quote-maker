@@ -1,4 +1,3 @@
-h1 {
-  color: black;
-  text-align: center;
+html, body{
+    height: 100%;
 }

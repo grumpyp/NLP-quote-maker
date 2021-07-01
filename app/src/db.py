@@ -18,10 +18,9 @@ mongo_client = pymongo.MongoClient(config.mongo_url, username=config.mongo_user,
                                    ssl_cert_reqs='CERT_NONE', serverSelectionTimeoutMS=3000)
 nlp_db = mongo_client[config.mongo_db_name]
 
-# this method is responsible for loading "quotes" collection
-
 
 def create_quotes_db():
+    """ This method is responsile for loading quotes from excel to Mongo """
 
     try:
         quotes_col = nlp_db[config.mongo_quotes_coll]
@@ -30,9 +29,10 @@ def create_quotes_db():
     except Exception as ex:
         logger.error("Error storing to mongodb", exc_info=True)
 
-# this method is responsible for reading quotes excel file and storing
-#records in mongodb
 def read_excel():
+    """ This method is responsible for reading quotes excel file 
+        and storing records in mongodb """
+
     print ("Going to work ", datetime.now())
     file_name = "Motivational Quotes Database.xlsx"
     
@@ -80,6 +80,34 @@ def fetch_quotes_by_author(author):
 
     return list(quotes_col.find({"author": author}))
 
+def fetch_quotes_by_ratings(quote, count=5):
+
+    sen_score = Rating.sentence_scores(quote)
+    sen_rating = sen_score["rating"]
+    logger.debug(f'Rating for quote  {quote} is {sen_score}')
+    quotes_col = nlp_db[config.mongo_quotes_coll]
+
+    result = quotes_col.aggregate([
+        {
+            '$project': {
+                'diff': {
+                    '$abs': {
+                        '$subtract': [
+                            sen_rating, '$rating'
+                        ]
+                    }
+                },
+                "doc": "$$ROOT"
+            }
+        }, {
+            '$sort': {
+                'diff': 1
+            }
+        }, {
+            '$limit': count
+        }
+    ])
+    return list(result)
 
 def test_db():
     return mongo_client.test
@@ -89,20 +117,23 @@ if __name__ == "__main__":
     # for a in fetch_quotes_by_author("Mark Twain"):
     #     print(a)
     #create_quotes_db()
-    ############## Parallelizing rating calc section (for all db items at one time) #############
-    def custom_sentiment_entity(group, cls):
-        results = list()
-        for text in group:
-            results.append((cls.sentiment_rating(
-                text), cls.entity_rating(text)))
-        return results
 
-    process_rating = Rating()
-    f = partial(custom_sentiment_entity, cls=process_rating)
-    quotes = process_rating.get_sentences(
-        pd.Series([data for data in fetch_all_quotes()]))
-    quotes = process_rating.get_sentences(df['quotes'])
-    parallelize = Parallelize(8, 125, f)
-    results = parallelize.execute(quotes)
-    del process_rating
+    print(fetch_quotes_by_ratings("I am very sad today"))
+
+    ############## Parallelizing rating calc section (for all db items at one time) #############
+    # def custom_sentiment_entity(group, cls):
+    #     results = list()
+    #     for text in group:
+    #         results.append((cls.sentiment_rating(
+    #             text), cls.entity_rating(text)))
+    #     return results
+
+    # process_rating = Rating()
+    # f = partial(custom_sentiment_entity, cls=process_rating)
+    # quotes = process_rating.get_sentences(
+    #     pd.Series([data for data in fetch_all_quotes()]))
+    # quotes = process_rating.get_sentences(df['quotes'])
+    # parallelize = Parallelize(8, 125, f)
+    # results = parallelize.execute(quotes)
+    # del process_rating
     ###################################################################################
