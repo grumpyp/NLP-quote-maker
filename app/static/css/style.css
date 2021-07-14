@@ -1,3 +1,9 @@
 html, body{
     height: 100%;
 }
+
+#result {
+    border-radius: 5px;
+    padding: 20px;
+    background-color: #98C6F1;
+}

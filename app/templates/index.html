@@ -9,18 +9,37 @@
 					url:"/livesearch",
 					data:{text:$("#livebox").val()},
 					success: function(response) {
-						console.log(response)
+						//console.log(response)
+						//TODO: now write a loop with JS like is done in jinjas to make it async
+						const responseJson = JSON.parse(response);
+						document.getElementById("result").innerHTML = "";
+						for (var quote of Object.values(responseJson)) {
+							if (quote['quote']) {
+								console.log(quote['quote'])
+								var node = document.createElement("LI");
+								var textnode = document.createTextNode(quote['quote'] );         // Create a text node
+								node.appendChild(textnode);                              // Append the text to <li>
+								author = document.createElement('author');
+								author.innerHTML = ' <b>'+' ' + quote['author'] + '<b>'
+								node.appendChild(author);  
+								document.getElementById("result").appendChild(node);   
+							}
+						}
 }
 				});
 			});
 		});
 	</script>
 </div>
-{% if data %}
+<div class="mt-5" id="result">
+	<h2>Quotes will appear here.</h2><br>
+	<h3>Type in your sentence, according to your mood in the input above</h3>
+</div>
+<!-- Not needed anymore, won't be a livesearch 
+{% if response %}
 <div class="mt-5" id="result">
 	<div class="row row-cols-1 row-cols-md-3 g-4">
-		{% for record in data %}
-
+		{% for record in response%}
 		<div class="col">
 			<div class="card">
 				<div class="card-header bg-primary text-white">Quote</div>
@@ -42,3 +61,4 @@
 </div>
 {% endif %}
 {% endblock %}
+-->

@@ -33,4 +33,4 @@ def livesearch():
     searchbox = request.form.get("text")
     data = [result['doc'] for result in db.fetch_quotes_by_ratings(searchbox)]
     logger.debug(f'Found matching quotes count  {data}')
-    return render_template('index.html', data = data)
+    return Response(response=dumps(data))
