@@ -2,8 +2,14 @@ html, body{
     height: 100%;
 }
 
-#result {
+/*#result {
     border-radius: 5px;
     padding: 20px;
     background-color: #98C6F1;
+}*/
+
+.rating {
+    border-radius: 5px;
+    padding: 5px;
+    background-color: teal;
 }
