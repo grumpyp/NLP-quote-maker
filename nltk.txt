@@ -1,0 +1,3 @@
+en_core_web_sm
+en
+vader_lexicon
