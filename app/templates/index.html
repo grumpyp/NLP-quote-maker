@@ -1,40 +1,41 @@
 {% extends "layout.html" %} {% block content %}
 <div class="offset-md-2 col-sm-8 mt-5">
-	<form
-		method="GET"
-		action="/quotes"
-		onsubmit="return validateForm(quote)"
-		class="form-group"
-	>
-		<div class="">
-			<input
-				id="quote_box"
-				type="text"
-				name="quote"
-				class="form-control border border-dark"
-				placeholder="Type your thoughts here..."
-				required
-			/>
-		</div>
-		<div class="mt-2 d-flex justify-content-center">
-			<div class="p-2">
-				<button type="submit" class="btn btn-primary btn-block">
-					Search Quote
-				</button>
-			</div>
-			<div class="p-2">
-				<button type="reset" class="btn btn-primary btn-block">
-					Clear
-				</button>
-			</div>
-		</div>
-	</form>
+	<input type ="text" id="livebox">
+	<script>
+		$(document).ready(function(){
+			$("#livebox").on("input",function(e){
+				$.ajax({
+					method:"post",
+					url:"/livesearch",
+					data:{text:$("#livebox").val()},
+					success: function(response) {
+						//console.log(response)
+						//TODO: now write a loop with JS like is done in jinjas to make it async
+						const responseJson = JSON.parse(response);
+						document.getElementById("result").innerHTML = "";
+						for (var quote of Object.values(responseJson)) {
+							if (quote['quote']) {
+								var node = document.createElement("span");
+								//'Rating: ' + quote['rating'] + ' ' + 'Sentiment: ' + JSON.stringify(quote['sentiment']) + " " + 'Entities: ' + quote['entities']
+								node.innerHTML = ('<div class="col"><div class="card"><div class="card-header bg-primary text-white">Quote</div><div class="card-body"><blockquote class="blockquote mb-0"><p>' + quote['quote'] + '</p><footer class="blockquote-footer">' + quote['author'] + '<cite title="Source Title">, Sentiment-Rating: ' + quote['rating'] + ' ' +  '</cite></footer></blockquote></div></div><br>');
+								document.getElementById("result").appendChild(node);
+							}
+						}
+					}
+				});
+			});
+		});
+	</script>
 </div>
-{% if data %}
+<div class="mt-5" id="result">
+	<h2>Quotes will appear here.</h2><br>
+	<h3>Type in your sentence, according to your mood in the input above</h3>
+</div>
+<!-- Not needed anymore, won't be a livesearch 
+{% if response %}
 <div class="mt-5" id="result">
 	<div class="row row-cols-1 row-cols-md-3 g-4">
-		{% for record in data %}
-
+		{% for record in response%}
 		<div class="col">
 			<div class="card">
 				<div class="card-header bg-primary text-white">Quote</div>
@@ -56,3 +57,4 @@
 </div>
 {% endif %}
 {% endblock %}
+-->
