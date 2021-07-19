@@ -1,5 +1,5 @@
 from flask import Flask
-import views
+from .views import view
 import config
 
 import src.functions 
@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 
-app.register_blueprint(views.view)
+app.register_blueprint(view)
 
 if __name__ == '__main__' and config.production == True:
     logger.debug("Going to start app ")
