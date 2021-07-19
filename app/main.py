@@ -2,7 +2,7 @@ from flask import Flask
 from .views import view
 from .config import log_file, production
 
-import src.functions 
+from src.functions import *
 
 import logging
 
