@@ -8,11 +8,6 @@ from collections import Counter
 import pandas as pd
 from joblib import Parallel, delayed
 
-# to get the corpora of the libraries please run these commands once in your terminal
-# python -m nltk.downloader vader_lexicon
-# python -m spacy download en_core_web_sm
-# python -m spacy download en
-
 
 class Parallelize():
     '''
