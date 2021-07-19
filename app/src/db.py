@@ -9,7 +9,7 @@ import logging
 
 from bson.objectid import ObjectId
 
-import config as config
+from app import config
 
 logger = logging.getLogger(__name__)
 
