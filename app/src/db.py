@@ -2,7 +2,8 @@ from .functions import Rating, Parallelize
 import pandas as pd
 from functools import partial
 from datetime import datetime
-from ..passwords import GITHUB_KEY, GITHUB_KEY_SECRET, GITHUB_TOKEN, GITHUB_TOKEN_SECRET
+import os
+
 
 import openpyxl
 import pymongo
@@ -11,6 +12,10 @@ import logging
 from bson.objectid import ObjectId
 
 from app import config
+
+URL = os.environment['secrets.mongodb_url']
+PW = os.environment['secrets.mongodb_user']
+Usr = os.environment['secrets.mongodb_password']
 
 logger = logging.getLogger(__name__)
 

@@ -1,0 +1,7 @@
+- name: API Keys
+env: 
+  URL: ${{secrets.mongodb_url}}
+  USER: ${{secrets.mongodb_user}}
+  PASSWORD: ${{secrets.mongodb_password}}
+run: |
+  passwords_test
