@@ -13,9 +13,9 @@ from bson.objectid import ObjectId
 
 from app import config
 
-URL = os.environment['secrets.mongodb_url']
-PW = os.environment['secrets.mongodb_user']
-Usr = os.environment['secrets.mongodb_password']
+URL = os.environ['secrets.mongodb_url']
+PW = os.environ['secrets.mongodb_user']
+Usr = os.environ['secrets.mongodb_password']
 
 logger = logging.getLogger(__name__)
 
