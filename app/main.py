@@ -1,6 +1,6 @@
 from flask import Flask
 from .views import view
-import config
+import .config
 
 import src.functions 
 
