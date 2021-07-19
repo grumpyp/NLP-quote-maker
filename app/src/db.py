@@ -2,6 +2,7 @@ from .functions import Rating, Parallelize
 import pandas as pd
 from functools import partial
 from datetime import datetime
+from ..passwords import GITHUB_KEY, GITHUB_KEY_SECRET, GITHUB_TOKEN, GITHUB_TOKEN_SECRET
 
 import openpyxl
 import pymongo
