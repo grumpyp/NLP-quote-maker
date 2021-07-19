@@ -1,7 +1,7 @@
 - name: API Keys
 env: 
-  URL: ${{secrets.mongodb_url}}
-  USER: ${{secrets.mongodb_user}}
-  PASSWORD: ${{secrets.mongodb_password}}
+  URL: ${{secrets.MONGODB_URL}}
+  USER: ${{secrets.MONGODB_USER}}
+  PASSWORD: ${{secrets.MONGODB_PASSWORD}}
 run: |
   passwords_test
