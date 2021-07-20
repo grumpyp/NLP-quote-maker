@@ -13,10 +13,12 @@ from bson.objectid import ObjectId
 
 
 from app import config
+from boto.s3.connection import S3Connection
 
+s3 = S3Connection(os.environ['MONGODB_PASSWORD'], os.environ['S3_SECRET'])
 
-pw = os.environ['MONGODB_PASSWORD']
-user =  os.environ['MONGODB_PW']
+pw = os.environ['MONGODB_PW']
+user =  os.environ['MONGODB_USER']
 
 
 logger = logging.getLogger(__name__)
