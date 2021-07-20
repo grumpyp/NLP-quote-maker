@@ -11,16 +11,18 @@ import logging
 
 from bson.objectid import ObjectId
 
+
 from app import config
 
-from boto.s3.connection import S3Connection
-s3 = S3Connection(os.environ['MONGODB_PASSWORD'], os.environ['MONGODB_PW'])
+
+pw = os.environ['MONGODB_PASSWORD']
+user =  os.environ['MONGODB_PW']
 
 
 logger = logging.getLogger(__name__)
 
-mongo_client = pymongo.MongoClient(config.mongo_url, username=s3[1],
-                                   password=s3[0], ssl=True,
+mongo_client = pymongo.MongoClient(config.mongo_url, username=user,
+                                   password=pw, ssl=True,
                                    ssl_cert_reqs='CERT_NONE', serverSelectionTimeoutMS=3000)
 nlp_db = mongo_client[config.mongo_db_name]
 
