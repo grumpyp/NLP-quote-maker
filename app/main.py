@@ -1,5 +1,5 @@
 from flask import Flask
-from .views import view
+from views import view
 import config
 
 import src.functions 

@@ -1,8 +1,8 @@
 from flask import render_template
 from flask import Blueprint
 from flask import request, Response
-from .src import functions
-from .src import db
+from src import functions
+from src import db
 
 from bson.json_util import dumps
 import logging
