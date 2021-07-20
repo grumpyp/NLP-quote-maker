@@ -2,6 +2,6 @@
 env: 
   MONGODB_URL: ${{secrets.MONGODB_URL}}
   MONGODB_USER: ${{secrets.MONGODB_USER}}
-  MONGODB_PASSWORD: ${{secrets.MONGODB_PASSWORD}}
+  MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
 run: |
   passwords_test
