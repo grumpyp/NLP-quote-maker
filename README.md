@@ -1,19 +1,37 @@
 # NLP-quote-maker
-A NLP driven script which will give you a quote according to the sentence you feed it. It pulls data from several API's and makes up a relation by f.e. sentiment of the sentence
+A NLP driven script which will give you a quote according to the sentence you feed it. It pulls data from several API's and makes up a relation by f.e. sentiment of the sentence.
 
-## Run
+## Start-up
 To run the app 
-- clone this repository `git clone git@github.com:grumpyp/NLP-quote-maker.git`
-- setup virtual environment __if required__ `python3 -m venv venv`
+- Clone this repository `git clone git@github.com:grumpyp/NLP-quote-maker.git`
+- Setup virtual environment __if required__ `python -m venv venv`
 - Install requirements.txt `pip install -r requirements.txt`
-- set environment variables "mongouser" and "mongopassword"
-- do `flask run`
+- Run app with `python app\main.py`
 
-## ⭐ Features
-tbd.
+## ⭐ Current features & Interface
+- NLTK SentimentIntensityAnalyzer was used to gpositive/neutral/negative rating scores and normalized into a composite score.
+- Entity labelling with spacy was used to attach one or more classes to each quote.
+- A text box is provided for user input where text is assessed, rated, matched to existing quotes within a quote database, and outputted with associated rating score.
 
-## 👾 Setup 
-tbd.
+## 👾 Repo Setup 
+Main branches containing all relevant files for use/development are found in the **deployment** and **development** branch respectively.  Proposed changes should be done and pulled on development branch first prior to merge with depolyment.
+
+    app
+    ├── src
+    │   ├── db.py
+    │   └── functions.py
+    ├── static
+    │   ├── css
+    │   │   └── style.css
+    │   └── js
+    │       └── main.js
+    ├── templates
+    │   ├── index.html
+    │   └── layout.html
+    ├── config.py
+    ├── main.py   
+    └── views.py 
+
 
 ## Support & Contributing
 
@@ -23,12 +41,11 @@ Feature Requests? Please file an [issue](https://github.com/grumpyp/NLP-quote-ma
 
 ## ToDo
 
-- [ ] Setup Flask environment
-- [ ] Deployment on a Server
-- [ ] Build frontend with dynamic search field
-- [ ] Find API's for quotes
-- [ ] Use Twitter and Reddit API
-- [ ] Find features to do a rating of the sentence
-- [ ] Find suitable NLP libraries
-- [ ] Possibly build own dataset
+- [x] Setup Flask environment
+- [x] Deployment on Heroku
+- [x] Build frontend with dynamic search field
+- [x] Find API's for quotes
+- [x] Use Twitter / Reddit API
+- [x] Find features to do a rating of the sentence
+- [x] Find suitable NLP libraries
 - [x] Write inital readme
