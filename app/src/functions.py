@@ -138,7 +138,7 @@ def reddit_quote():
 
     res = requests.get("https://oauth.reddit.com/r/quoteporn/new",
                    headers=headers, params={'limit':10})
-    result_num = ""
+    result_num = 0
     result_quote = ""
     for count,i in enumerate(res.json()['data']['children']):
         if count == 0:
