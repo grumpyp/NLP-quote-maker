@@ -13,3 +13,9 @@ html, body{
     padding: 5px;
     background-color: teal;
 }
+
+#livebox {
+    background-color:lightblue;
+    border-radius: 5px;
+    padding: 15px;
+}

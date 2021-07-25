@@ -13,7 +13,8 @@ logger = logging.getLogger(__name__)
 
 @view.route('/')
 def index():
-    return  render_template('index.html')
+    reddit_api = functions.reddit_quote()
+    return  render_template('index.html', reddit = reddit_api )
 
 
 @view.get('/quotes')

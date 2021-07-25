@@ -7,6 +7,8 @@ from spacy.util import minibatch
 from collections import Counter
 import pandas as pd
 from joblib import Parallel, delayed
+from app import config
+import requests
 
 # to get the corpora of the libraries please run these commands once in your terminal
 # python -m nltk.downloader vader_lexicon
@@ -121,7 +123,33 @@ class Rating():
         nlp = Rating.nlp_load(sentence)
         return [(ent.text, ent.label_) for ent in nlp.ents]
 
-      
+def reddit_quote():
+    auth = requests.auth.HTTPBasicAuth(config.reddit_id, config.reddit_secret)
+
+    data = {'grant_type': 'password',
+        'username': config.reddit_user,
+        'password': config.reddit_pw}
+    headers = {'User-Agent': 'NLP-quote-maker'}
+    res = requests.post('https://www.reddit.com/api/v1/access_token',
+                    auth=auth, data=data, headers=headers)
+    TOKEN = res.json()['access_token']
+    headers = {**headers, **{'Authorization': f"bearer {TOKEN}"}}
+    requests.get('https://oauth.reddit.com/api/v1/me', headers=headers)
+
+    res = requests.get("https://oauth.reddit.com/r/quoteporn/new",
+                   headers=headers, params={'limit':10})
+    result_num = ""
+    result_quote = ""
+    for count,i in enumerate(res.json()['data']['children']):
+        if count == 0:
+            result_num = int(i['data']['score'])
+        if i['data']['score']:
+            print(i['data']['title'])
+            if int(i['data']['score']) > result_num:
+                result_num = int(i['data']['score'])
+                result_quote = i['data']['title']
+    return result_quote
+
 
 if __name__ == '__main__':
     rater = Rating()

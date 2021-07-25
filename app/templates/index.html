@@ -1,6 +1,6 @@
 {% extends "layout.html" %} {% block content %}
-<div class="offset-md-2 col-sm-8 mt-5">
-	<input type ="text" id="livebox">
+<div class="offset-md-0 col-sm-8 mt-5">
+	<input type ="text" id="livebox" size="30" placeholder="Type in your sentence here"> 
 	<script>
 		$(document).ready(function(){
 			$("#livebox").on("input",function(e){
@@ -26,7 +26,28 @@
 			});
 		});
 	</script>
+</div><br>
+<!--Quote Reddit API-->
+<div class="row mb-2">
+<div class="col-md-6">
+	<div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+		<strong><a href="https://www.reddit.com/r/quoteporn/">Reddit</a></strong>
+		<h3>Quote</h3>
+		<p>{{reddit}}</p>
+		<a href="">Reddit</a>
+	</div>
 </div>
+
+<!--Quote Twitter API-->
+<div class="col-md-6">
+	<div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+		<h3>Quote</h3>
+		<p>Quote</p>
+		<a href="">Reddit</a>
+	</div>
+</div>
+</div>
+
 <div class="mt-5" id="result">
 	<h2>Quotes will appear here.</h2><br>
 	<h3>Type in your sentence, according to your mood in the input above</h3>
