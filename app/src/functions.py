@@ -145,7 +145,7 @@ def reddit_quote():
             result_num = int(i['data']['score'])
         if i['data']['score']:
             print(i['data']['title'])
-            if int(i['data']['score']) > result_num:
+            if int(i['data']['score']) >= result_num:
                 result_num = int(i['data']['score'])
                 result_quote = i['data']['title']
     return result_quote
