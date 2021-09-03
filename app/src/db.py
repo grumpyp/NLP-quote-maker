@@ -107,7 +107,15 @@ def fetch_quotes_by_ratings(quote, count=5):
             '$limit': count
         }
     ])
-    return list(result)
+    filter_duplicates = []
+    print("filter_duplicates=", filter_duplicates)
+    resultlist = list(result)
+    print("result=", len(resultlist))
+    for quote in resultlist:
+        if quote not in filter_duplicates:
+            filter_duplicates.append(quote)
+    print("filter_duplicates=", len(filter_duplicates))
+    return filter_duplicates
 
 def test_db():
     return mongo_client.test
